@@ -8,6 +8,29 @@
 
 #import <Foundation/Foundation.h>
 
-@interface TMGitSuggestEngine : NSObject
+@interface TMGitSuggestEngine : NSObject {
+    
+    NSString *repoName;
+    NSMutableArray *repoWatchers;
+    NSMutableArray *bigRepoList;
+    NSMutableDictionary *repoDictWithAttributes; 
 
+    
+    
+}
+@property (nonatomic, retain) NSString *repoName;
+@property (nonatomic, retain) NSMutableArray *repoWatchers;
+@property (nonatomic, retain) NSMutableArray *bigRepoList;
+@property (nonatomic, retain) NSMutableDictionary *repoDictWithAttributes;
+
+
+
+
+
+
+-(id) initWithUserName:(NSString *) user andRepoName:(NSString *) repo;
+-(void) compileListOfReposBasedOnWatchers;
+-(void) addToBigListOfRepos:(NSData *) data;
+-(void) enumerateThroughReposAndIncrementPopularity;
+-(void) checkForMatchingWatchers:(NSData *) data;
 @end

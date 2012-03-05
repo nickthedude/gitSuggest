@@ -13,6 +13,7 @@
 		528DB37315054B9600618510 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 528DB37115054B9600618510 /* Credits.rtf */; };
 		528DB37615054B9600618510 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 528DB37515054B9600618510 /* AppDelegate.m */; };
 		528DB37915054B9700618510 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 528DB37715054B9700618510 /* MainMenu.xib */; };
+		528DB38115054CB500618510 /* TMGitSuggestEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = 528DB38015054CB500618510 /* TMGitSuggestEngine.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -21,14 +22,16 @@
 		528DB36515054B9600618510 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
 		528DB36615054B9600618510 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		528DB36715054B9600618510 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
-		528DB36A15054B9600618510 /* gitSuggest-Info.plist */ = {isa = PBXFileReference; path = "gitSuggest-Info.plist"; sourceTree = "<group>"; };
+		528DB36A15054B9600618510 /* gitSuggest-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "gitSuggest-Info.plist"; sourceTree = "<group>"; };
 		528DB36C15054B9600618510 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		528DB36E15054B9600618510 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		528DB37015054B9600618510 /* gitSuggest-Prefix.pch */ = {isa = PBXFileReference; path = "gitSuggest-Prefix.pch"; sourceTree = "<group>"; };
+		528DB37015054B9600618510 /* gitSuggest-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "gitSuggest-Prefix.pch"; sourceTree = "<group>"; };
 		528DB37215054B9600618510 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = en; path = en.lproj/Credits.rtf; sourceTree = "<group>"; };
-		528DB37415054B9600618510 /* AppDelegate.h */ = {isa = PBXFileReference; path = AppDelegate.h; sourceTree = "<group>"; };
+		528DB37415054B9600618510 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		528DB37515054B9600618510 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		528DB37815054B9700618510 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		528DB37F15054CB400618510 /* TMGitSuggestEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TMGitSuggestEngine.h; sourceTree = "<group>"; };
+		528DB38015054CB500618510 /* TMGitSuggestEngine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TMGitSuggestEngine.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -85,6 +88,8 @@
 				528DB37415054B9600618510 /* AppDelegate.h */,
 				528DB37515054B9600618510 /* AppDelegate.m */,
 				528DB37715054B9700618510 /* MainMenu.xib */,
+				528DB37F15054CB400618510 /* TMGitSuggestEngine.h */,
+				528DB38015054CB500618510 /* TMGitSuggestEngine.m */,
 				528DB36915054B9600618510 /* Supporting Files */,
 			);
 			path = gitSuggest;
@@ -168,6 +173,7 @@
 			files = (
 				528DB36F15054B9600618510 /* main.m in Sources */,
 				528DB37615054B9600618510 /* AppDelegate.m in Sources */,
+				528DB38115054CB500618510 /* TMGitSuggestEngine.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
