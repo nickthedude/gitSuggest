@@ -49,6 +49,7 @@
         self.repoName = repo;
         self.repoWatchers = [[NSMutableArray alloc] init];
         self.bigRepoList = [[NSMutableArray alloc] init];
+        repoCheckCount = 0;
         self.repoDictWithAttributes = [[NSMutableDictionary alloc] init];
         dispatch_async(kBgQueue, ^{
             NSData* data = [NSData dataWithContentsOfURL:[NSURL URLWithString:[kLatestKivaLoansURL stringByAppendingFormat:@"%@/%@/watchers", user, self.repoName]]];
@@ -84,11 +85,11 @@
         
         NSLog(@"repo check for :%@",loginName);
         dispatch_sync(kBgQueue, ^{
+           
             NSData* data = [NSData dataWithContentsOfURL:[NSURL URLWithString:[NSString stringWithFormat:@"https://api.github.com/users/%@/repos", loginName]]];
             [self performSelectorOnMainThread:@selector(addToBigListOfRepos:) withObject:data waitUntilDone:YES];
         });
     }
-    
     
 }
 
@@ -102,10 +103,15 @@
             [self.bigRepoList addObject:dict];
         }
     }
+    repoCheckCount ++;
+
 //    for (NSDictionary *repo in self.bigRepoList) {
 //        NSLog(@"%@",[repo valueForKey:@"name"]);
 //
 //    }
+    if (repoCheckCount == [self.repoWatchers count]) {
+        [self enumerateThroughReposAndIncrementPopularity];
+    }
 }
 
 -(void) enumerateThroughReposAndIncrementPopularity {
@@ -115,20 +121,21 @@
         
         [repoMatchDict setObject:[singleRepo objectForKey:@"name"] forKey:@"repoName"];
         [repoMatchDict setObject:[singleRepo objectForKey:@"watchers"] forKey:@"watchers"];
-        [repoMatchDict setObject:[NSNumber numberWithInt:0] forKey:@"watchers"];
+        [repoMatchDict setObject:[NSNumber numberWithInt:0] forKey:@"matchCount"];
 
-        [repoDictWithAttributes setObject:repoDictWithAttributes forKey:[singleRepo objectForKey:@"name"]];
+        [repoDictWithAttributes setObject:repoMatchDict forKey:[singleRepo objectForKey:@"name"]];
         [repoMatchDict release];
         
         dispatch_async(kBgQueue, ^{
+           
             NSData* data = [NSData dataWithContentsOfURL:[NSURL URLWithString:[kLatestKivaLoansURL stringByAppendingFormat:@"%@/%@/watchers", [[singleRepo objectForKey:@"owner"] objectForKey:@"login"], [singleRepo objectForKey:@"name"]]]];
-            [self performSelectorOnMainThread:@selector(checkForMatchingWatchers:) withObject:data waitUntilDone:YES];
+            [self performSelector:@selector(checkForMatchingWatchers:forRepoName:) withObject:data withObject:[singleRepo objectForKey:@"name"]];
         });
         
     }
 }
 
--(void) checkForMatchingWatchers:(NSData *) data {
+-(void) checkForMatchingWatchers:(NSData *) data forRepoName:(NSString*) repo {
     
     NSError* error;
     NSArray* json = [NSJSONSerialization JSONObjectWithData:data //1
@@ -136,18 +143,25 @@
                                                       error:&error];
     for (NSString *originalWatcher in self.repoWatchers) {
         
-        for (NSInteger i = 0; i < [json count]; i++) {
+            for (NSInteger i = 0; i < [json count]; i++) {
             if ([originalWatcher isEqualToString:[[json objectAtIndex:i] objectForKey:@"login"]]) {
-                
+                [[repoDictWithAttributes objectForKey:repo] setObject:[NSNumber numberWithInt:[[[repoDictWithAttributes objectForKey:repo] objectForKey:@"matchCount"] intValue] + 1] forKey:@"matchCount"];
+            
             }
         }
+        
+        
         
         
         
         //compare the original names with the login names returned and see if there is any matches
     
     }
+    for (NSDictionary *dd in [repoDictWithAttributes allValues]) {
     
+        NSLog(@"%@ %@", [dd objectForKey:@"repoName"], [dd objectForKey:@"matchCount"]);
+            
+    }
 }
 
 

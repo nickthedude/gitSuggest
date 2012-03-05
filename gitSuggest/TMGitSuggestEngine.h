@@ -14,6 +14,7 @@
     NSMutableArray *repoWatchers;
     NSMutableArray *bigRepoList;
     NSMutableDictionary *repoDictWithAttributes; 
+    NSInteger repoCheckCount;
 
     
     
@@ -32,5 +33,5 @@
 -(void) compileListOfReposBasedOnWatchers;
 -(void) addToBigListOfRepos:(NSData *) data;
 -(void) enumerateThroughReposAndIncrementPopularity;
--(void) checkForMatchingWatchers:(NSData *) data;
+-(void) checkForMatchingWatchers:(NSData *) data forRepoName:(NSString*) repo;
 @end

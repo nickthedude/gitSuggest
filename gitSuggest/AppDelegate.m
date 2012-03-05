@@ -21,7 +21,7 @@
 {
     // Insert code here to initialize your application
     
-    TMGitSuggestEngine *gEngine = [[TMGitSuggestEngine alloc] initWithUserName:@"nickthedude" andRepoName:@"UIScrollView-with-drag-and-drop-subviews"];
+    TMGitSuggestEngine *gEngine = [[TMGitSuggestEngine alloc] initWithUserName:@"cocos2d" andRepoName:@"cocos2d-iphone-extensions"];
     
 }
 
