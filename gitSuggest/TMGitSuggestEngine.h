@@ -19,18 +19,21 @@
     NSInteger repoCheckCount;
     NSInteger matchProgression;
     NSInteger matchProgressionHighMark;
-
+    IBOutlet NSArray *sortedArray;
     
     
 }
 @property (nonatomic, retain) NSString *repoName;
 @property (nonatomic, retain) NSString *userName;
 @property (nonatomic, retain) NSMutableArray *repoWatchers;
+@property (nonatomic, retain) NSArray *sortedArray;
+
 @property (nonatomic, retain) NSMutableArray *bigRepoList;
 @property (nonatomic, retain) NSMutableDictionary *repoDictWithAttributes;
 @property (assign) IBOutlet NSTextField *gitAddress;
 @property (assign) IBOutlet NSArrayController *tViewController;
 
+@property (assign) IBOutlet NSScrollView *repoScrollView;
 
 
 

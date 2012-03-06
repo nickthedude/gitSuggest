@@ -37,10 +37,12 @@
 
 @implementation TMGitSuggestEngine
 @synthesize tViewController;
+@synthesize repoScrollView;
 
 @synthesize repoName;
 @synthesize repoWatchers;
 @synthesize bigRepoList;
+@synthesize sortedArray;
 @synthesize repoDictWithAttributes;
 @synthesize gitAddress;
 @synthesize userName;
@@ -184,16 +186,17 @@
         
         }
         //not sure why but it stalls after 98 results
-        if (matchProgression == (matchProgressionHighMark - 96)) {
+        if (matchProgression == (matchProgressionHighMark - 96) || matchProgression == 0) {
            // for (NSDictionary *dd in [repoDictWithAttributes allValues]) {
                 
                 //NSLog(@"%@ %@", [dd objectForKey:@"repoName"], [dd objectForKey:@"matchCount"]);
                 NSSortDescriptor *descriptor = [[NSSortDescriptor alloc] initWithKey:@"matchCount"  ascending:NO];
-                NSArray *sortedArray = [[repoDictWithAttributes allValues] sortedArrayUsingDescriptors:[NSArray arrayWithObjects:descriptor,nil]];
+                self.sortedArray = [[repoDictWithAttributes allValues] sortedArrayUsingDescriptors:[NSArray arrayWithObjects:descriptor,nil]];
 
             for (NSInteger i = 0; i < [sortedArray count]; i++) {
                 NSLog(@"%@ %@", [[sortedArray objectAtIndex:i] objectForKey:@"repoName"], [[sortedArray objectAtIndex:i] objectForKey:@"matchCount"]);
             }
+            
           //  }
         }
         NSLog(@"match progression = %ld", matchProgression);
