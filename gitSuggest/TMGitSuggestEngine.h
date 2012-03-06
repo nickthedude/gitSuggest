@@ -15,6 +15,7 @@
     NSMutableArray *bigRepoList;
     NSMutableDictionary *repoDictWithAttributes; 
     NSInteger repoCheckCount;
+    NSInteger matchProgression;
 
     
     

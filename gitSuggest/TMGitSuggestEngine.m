@@ -50,9 +50,10 @@
         self.repoWatchers = [[NSMutableArray alloc] init];
         self.bigRepoList = [[NSMutableArray alloc] init];
         repoCheckCount = 0;
+        matchProgression = 0;
         self.repoDictWithAttributes = [[NSMutableDictionary alloc] init];
         dispatch_async(kBgQueue, ^{
-            NSData* data = [NSData dataWithContentsOfURL:[NSURL URLWithString:[kLatestKivaLoansURL stringByAppendingFormat:@"%@/%@/watchers", user, self.repoName]]];
+            NSData* data = [NSData dataWithContentsOfURL:[NSURL URLWithString:[kLatestKivaLoansURL stringByAppendingFormat:@"%@/%@/watchers?per_page=100", user, self.repoName]]];
             [self performSelectorOnMainThread:@selector(fetchedData:) withObject:data waitUntilDone:YES];
         });
     }
@@ -118,7 +119,7 @@
     
     for (NSDictionary *singleRepo in self.bigRepoList) {
         NSMutableDictionary *repoMatchDict = [[NSMutableDictionary alloc] init];
-        
+        matchProgression ++;
         [repoMatchDict setObject:[singleRepo objectForKey:@"name"] forKey:@"repoName"];
         [repoMatchDict setObject:[singleRepo objectForKey:@"watchers"] forKey:@"watchers"];
         [repoMatchDict setObject:[NSNumber numberWithInt:0] forKey:@"matchCount"];
@@ -128,7 +129,7 @@
         
         dispatch_async(kBgQueue, ^{
            
-            NSData* data = [NSData dataWithContentsOfURL:[NSURL URLWithString:[kLatestKivaLoansURL stringByAppendingFormat:@"%@/%@/watchers", [[singleRepo objectForKey:@"owner"] objectForKey:@"login"], [singleRepo objectForKey:@"name"]]]];
+            NSData* data = [NSData dataWithContentsOfURL:[NSURL URLWithString:[kLatestKivaLoansURL stringByAppendingFormat:@"%@/%@/watchers?per_page=100", [[singleRepo objectForKey:@"owner"] objectForKey:@"login"], [singleRepo objectForKey:@"name"]]]];
             [self performSelector:@selector(checkForMatchingWatchers:forRepoName:) withObject:data withObject:[singleRepo objectForKey:@"name"]];
         });
         
@@ -136,31 +137,46 @@
 }
 
 -(void) checkForMatchingWatchers:(NSData *) data forRepoName:(NSString*) repo {
-    
-    NSError* error;
-    NSArray* json = [NSJSONSerialization JSONObjectWithData:data //1
-                                                    options:kNilOptions 
-                                                      error:&error];
-    for (NSString *originalWatcher in self.repoWatchers) {
+    matchProgression --;
+
+    if (data != nil) {
         
-            for (NSInteger i = 0; i < [json count]; i++) {
-            if ([originalWatcher isEqualToString:[[json objectAtIndex:i] objectForKey:@"login"]]) {
-                [[repoDictWithAttributes objectForKey:repo] setObject:[NSNumber numberWithInt:[[[repoDictWithAttributes objectForKey:repo] objectForKey:@"matchCount"] intValue] + 1] forKey:@"matchCount"];
+        NSError* error;
+        NSArray* json = [NSJSONSerialization JSONObjectWithData:data //1
+                                                        options:kNilOptions 
+                                                          error:&error];
+        for (NSString *originalWatcher in self.repoWatchers) {
             
+                for (NSInteger i = 0; i < [json count]; i++) {
+                if ([originalWatcher isEqualToString:[[json objectAtIndex:i] objectForKey:@"login"]]) {
+                    [[repoDictWithAttributes objectForKey:repo] setObject:[NSNumber numberWithInt:[[[repoDictWithAttributes objectForKey:repo] objectForKey:@"matchCount"] intValue] + 1] forKey:@"matchCount"];
+                
+                }
             }
-        }
-        
-        
-        
-        
-        
-        //compare the original names with the login names returned and see if there is any matches
-    
-    }
-    for (NSDictionary *dd in [repoDictWithAttributes allValues]) {
-    
-        NSLog(@"%@ %@", [dd objectForKey:@"repoName"], [dd objectForKey:@"matchCount"]);
             
+            
+            
+            
+            
+            //compare the original names with the login names returned and see if there is any matches
+        
+        }
+        if (matchProgression == 130) {
+           // for (NSDictionary *dd in [repoDictWithAttributes allValues]) {
+                
+                //NSLog(@"%@ %@", [dd objectForKey:@"repoName"], [dd objectForKey:@"matchCount"]);
+                NSSortDescriptor *descriptor = [[NSSortDescriptor alloc] initWithKey:@"matchCount"  ascending:NO];
+                NSArray *sortedArray = [[repoDictWithAttributes allValues] sortedArrayUsingDescriptors:[NSArray arrayWithObjects:descriptor,nil]];
+
+            for (NSInteger i = 0; i < [sortedArray count]; i++) {
+                NSLog(@"%@ %@", [[sortedArray objectAtIndex:i] objectForKey:@"repoName"], [[sortedArray objectAtIndex:i] objectForKey:@"matchCount"]);
+            }
+          //  }
+        }
+        NSLog(@"match progression = %ld", matchProgression);
+        
+               
+        
     }
 }
 
