@@ -11,19 +11,25 @@
 @interface TMGitSuggestEngine : NSObject {
     
     NSString *repoName;
+    NSString *userName;
+
     NSMutableArray *repoWatchers;
     NSMutableArray *bigRepoList;
     NSMutableDictionary *repoDictWithAttributes; 
     NSInteger repoCheckCount;
     NSInteger matchProgression;
+    NSInteger matchProgressionHighMark;
 
     
     
 }
 @property (nonatomic, retain) NSString *repoName;
+@property (nonatomic, retain) NSString *userName;
 @property (nonatomic, retain) NSMutableArray *repoWatchers;
 @property (nonatomic, retain) NSMutableArray *bigRepoList;
 @property (nonatomic, retain) NSMutableDictionary *repoDictWithAttributes;
+@property (assign) IBOutlet NSTextField *gitAddress;
+@property (assign) IBOutlet NSArrayController *tViewController;
 
 
 
@@ -35,4 +41,8 @@
 -(void) addToBigListOfRepos:(NSData *) data;
 -(void) enumerateThroughReposAndIncrementPopularity;
 -(void) checkForMatchingWatchers:(NSData *) data forRepoName:(NSString*) repo;
+- (IBAction)submit:(id)sender;
+-(void) kickoffSuggestionEngine;
+
+
 @end

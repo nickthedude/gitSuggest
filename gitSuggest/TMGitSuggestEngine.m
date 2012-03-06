@@ -36,26 +36,46 @@
 @end
 
 @implementation TMGitSuggestEngine
+@synthesize tViewController;
 
 @synthesize repoName;
 @synthesize repoWatchers;
 @synthesize bigRepoList;
 @synthesize repoDictWithAttributes;
+@synthesize gitAddress;
+@synthesize userName;
 
+- (IBAction)submit:(id)sender {
+
+    NSArray *ar = [NSArray arrayWithArray:[self.gitAddress.stringValue pathComponents]];
+    NSLog(@"%@", ar);
+    self.repoName = [[ar objectAtIndex:3] stringByReplacingOccurrencesOfString:@".git" withString:@""];
+    self.userName   = [ar objectAtIndex:2]; 
+    
+    [self kickoffSuggestionEngine];
+                   
+           
+}
+
+-(void) kickoffSuggestionEngine {
+   
+    self.repoWatchers = [[[NSMutableArray alloc] init] retain];
+    self.bigRepoList = [[NSMutableArray alloc] init];
+    self.repoDictWithAttributes = [[NSMutableDictionary alloc] init];
+    dispatch_async(kBgQueue, ^{
+        NSData* data = [NSData dataWithContentsOfURL:[NSURL URLWithString:[kLatestKivaLoansURL stringByAppendingFormat:@"%@/%@/watchers?per_page=100", self.userName, self.repoName]]];
+        [self performSelectorOnMainThread:@selector(fetchedData:) withObject:data waitUntilDone:YES];
+    });
+
+    
+}
 
 -(id) initWithUserName:(NSString *) user andRepoName:(NSString *) repo {
     
     if (self = [super init]) {
-        self.repoName = repo;
-        self.repoWatchers = [[NSMutableArray alloc] init];
-        self.bigRepoList = [[NSMutableArray alloc] init];
         repoCheckCount = 0;
         matchProgression = 0;
-        self.repoDictWithAttributes = [[NSMutableDictionary alloc] init];
-        dispatch_async(kBgQueue, ^{
-            NSData* data = [NSData dataWithContentsOfURL:[NSURL URLWithString:[kLatestKivaLoansURL stringByAppendingFormat:@"%@/%@/watchers?per_page=100", user, self.repoName]]];
-            [self performSelectorOnMainThread:@selector(fetchedData:) withObject:data waitUntilDone:YES];
-        });
+       
     }
     
     return self;
@@ -64,6 +84,8 @@
 
 - (void)fetchedData:(NSData *)responseData {
     //parse out the json data
+   
+
     NSError* error;
     NSArray* json = [NSJSONSerialization JSONObjectWithData:responseData //1
                                                          options:kNilOptions 
@@ -132,7 +154,7 @@
             NSData* data = [NSData dataWithContentsOfURL:[NSURL URLWithString:[kLatestKivaLoansURL stringByAppendingFormat:@"%@/%@/watchers?per_page=100", [[singleRepo objectForKey:@"owner"] objectForKey:@"login"], [singleRepo objectForKey:@"name"]]]];
             [self performSelector:@selector(checkForMatchingWatchers:forRepoName:) withObject:data withObject:[singleRepo objectForKey:@"name"]];
         });
-        
+        matchProgressionHighMark = matchProgression;
     }
 }
 
@@ -161,7 +183,8 @@
             //compare the original names with the login names returned and see if there is any matches
         
         }
-        if (matchProgression == 130) {
+        //not sure why but it stalls after 98 results
+        if (matchProgression == (matchProgressionHighMark - 96)) {
            // for (NSDictionary *dd in [repoDictWithAttributes allValues]) {
                 
                 //NSLog(@"%@ %@", [dd objectForKey:@"repoName"], [dd objectForKey:@"matchCount"]);

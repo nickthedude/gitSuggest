@@ -19,9 +19,9 @@
 /* Begin PBXFileReference section */
 		528DB35E15054B9600618510 /* gitSuggest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = gitSuggest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		528DB36215054B9600618510 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
-		528DB36515054B9600618510 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
-		528DB36615054B9600618510 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
-		528DB36715054B9600618510 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		528DB36515054B9600618510 /* AppKit.framework */ = {isa = PBXFileReference; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
+		528DB36615054B9600618510 /* CoreData.framework */ = {isa = PBXFileReference; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		528DB36715054B9600618510 /* Foundation.framework */ = {isa = PBXFileReference; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		528DB36A15054B9600618510 /* gitSuggest-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "gitSuggest-Info.plist"; sourceTree = "<group>"; };
 		528DB36C15054B9600618510 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		528DB36E15054B9600618510 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
