@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface TMGitSuggestEngine : NSObject {
+@interface TMGitSuggestEngine : NSObject <NSControlTextEditingDelegate>{
     
     NSString *repoName;
     NSString *userName;
@@ -23,6 +23,7 @@
     
     
 }
+@property (assign) IBOutlet NSTextField *waitMessage;
 @property (nonatomic, retain) NSString *repoName;
 @property (nonatomic, retain) NSString *userName;
 @property (nonatomic, retain) NSMutableArray *repoWatchers;

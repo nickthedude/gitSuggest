@@ -39,6 +39,7 @@
 @synthesize tViewController;
 @synthesize repoScrollView;
 
+@synthesize waitMessage;
 @synthesize repoName;
 @synthesize repoWatchers;
 @synthesize bigRepoList;
@@ -55,6 +56,8 @@
     self.userName   = [ar objectAtIndex:2]; 
     
     [self kickoffSuggestionEngine];
+    [self.waitMessage setHidden:NO];
+
                    
            
 }
@@ -159,7 +162,11 @@
         matchProgressionHighMark = matchProgression;
     }
 }
-
+-(void) awakeFromNib {
+    
+    [self.waitMessage setHidden:YES];
+    
+}
 -(void) checkForMatchingWatchers:(NSData *) data forRepoName:(NSString*) repo {
     matchProgression --;
 
@@ -198,12 +205,22 @@
             }
             
           //  }
+            [self.waitMessage setHidden:YES];
+
         }
         NSLog(@"match progression = %ld", matchProgression);
         
                
         
     }
+}
+
+
+- (BOOL)control:(NSControl *)control textShouldBeginEditing:(NSText *)fieldEditor {
+//        NSTextField 
+    [self.gitAddress.cell setPlaceholderString:@""];
+    
+    return YES;
 }
 
 
