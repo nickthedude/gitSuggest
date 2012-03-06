@@ -10,30 +10,7 @@
 #define kBgQueue dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0) //1
 #define kLatestKivaLoansURL @"https://api.github.com/repos/" //2
 
-@interface NSDictionary(JSONCategories)
-+(NSDictionary*)dictionaryWithContentsOfJSONURLString:(NSString*)urlAddress;
--(NSData*)toJSON;
-@end
 
-@implementation NSDictionary(JSONCategories)
-
-+(NSDictionary*)dictionaryWithContentsOfJSONURLString:(NSString*)urlAddress
-{
-    NSData* data = [NSData dataWithContentsOfURL: [NSURL URLWithString: urlAddress] ];
-    __autoreleasing NSError* error = nil;
-    id result = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
-    if (error != nil) return nil;
-    return result;
-}
-
--(NSData*)toJSON
-{
-    NSError* error = nil;
-    id result = [NSJSONSerialization dataWithJSONObject:self options:kNilOptions error:&error];
-    if (error != nil) return nil;
-    return result;    
-}
-@end
 
 @implementation TMGitSuggestEngine
 @synthesize tViewController;
