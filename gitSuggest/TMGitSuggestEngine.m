@@ -49,7 +49,8 @@
 @synthesize userName;
 
 - (IBAction)submit:(id)sender {
-
+    repoCheckCount = 0;
+    matchProgression = 0;
     NSArray *ar = [NSArray arrayWithArray:[self.gitAddress.stringValue pathComponents]];
     NSLog(@"%@", ar);
     self.repoName = [[ar objectAtIndex:3] stringByReplacingOccurrencesOfString:@".git" withString:@""];
